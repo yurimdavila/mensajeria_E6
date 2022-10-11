@@ -56,7 +56,7 @@
                         <form onsubmit="return enviarMAIL()">
                           <input required id="txtAsunto" name="txtAsunto" class="form-control" type="text" placeholder="Asunto" max="50"/>
                           <hr>
-                          <select required class="form-control" id="sl-destino" name="sl_destino">
+                          <select required class="form-control" id="sl-destino" name="sl-destino">
                             <option value=''>Seleccione destinatario</option>
                             {% for m in datas %}
                             <option value="{{ m['correo'] }}">{{ m['nombreUsuario'] }}</option>
@@ -167,7 +167,7 @@
       function enviarMAIL(){
         $.ajax({
           url : 'enviarMAIL',
-          data : "asunto="+$("#txtAsunto").val()+"&emailDestino="+$("#sl_destino").val()+"&mensaje="+$("#txtMensaje").val(),
+          data : "asunto="+$("#txtAsunto").val()+"&emailDestino="+$("#sl-destino").val()+"&mensaje="+$("#txtMensaje").val(),
           type : 'POST',
           success : function(r) {
                  alert(r);    
