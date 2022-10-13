@@ -4,7 +4,7 @@ import sqlite3
 
 #El usuario y password vienen del app.py
 def validar_usuario(usuario, password):
-    db=sqlite3.connect("mensajeria.db3")                      #conexion a la BD
+    db=sqlite3.connect("mensajeria.s3db")                      #conexion a la BD
     db.row_factory=sqlite3.Row                                #Asigno a mi variable todas las cabeceras(id, nombre se convierten en variables)
     cursor=db.cursor()                                        #sirve para poder crear la consulta
     consulta="SELECT * FROM usuarios WHERE correo='"+usuario+"' AND password='"+password+"' AND estado='1'"    #se crea la cadena string que permite realizar la consulta
@@ -14,7 +14,7 @@ def validar_usuario(usuario, password):
 
 def registrar_usuario(nombre, correo, password, codigo):
     try:
-        db=sqlite3.connect("mensajeria.db3")                      
+        db=sqlite3.connect("mensajeria.s3db")                      
         db.row_factory=sqlite3.Row                                
         cursor=db.cursor()                                        
         consulta="INSERT INTO usuarios (nombreUsuario, correo, password, estado, codigoActivacion) VALUES ('"+nombre+"', '"+correo+"', '"+password+"', '0', '"+codigo+"')"
@@ -28,7 +28,7 @@ def registrar_usuario(nombre, correo, password, codigo):
         return "¡Error! No es posible registrar al usuario debido a que el CORREO y/o NOMBRE DE USUARIO existen. Lo invitamos a modificar los campos pertinentes"
 
 def activar_Usuario(codigo):
-    db=sqlite3.connect("mensajeria.db3")                      
+    db=sqlite3.connect("mensajeria.s3db")                      
     db.row_factory=sqlite3.Row                                
     cursor=db.cursor()                                        
     consulta="UPDATE usuarios SET estado='1' WHERE codigoActivacion='"+codigo+"' "
@@ -41,7 +41,7 @@ def activar_Usuario(codigo):
     return resultado
 
 def lista_destinatarios(usuario):
-    db=sqlite3.connect("mensajeria.db3")
+    db=sqlite3.connect("mensajeria.s3db")
     db.row_factory=sqlite3.Row
     cursor=db.cursor()
     consulta="SELECT * FROM usuarios WHERE correo<>'"+usuario+"'"
@@ -50,7 +50,7 @@ def lista_destinatarios(usuario):
     return resultado
 
 def registrar_mail(origen, destino, asunto, mensaje):
-    db=sqlite3.connect("mensajeria.db3")
+    db=sqlite3.connect("mensajeria.s3db")
     db.row_factory=sqlite3.Row
     cursor=db.cursor()
     consulta="INSERT INTO mensajeria (asunto,mensaje,fecha,hora,id_usu_envia,id_usu_recibe,estado) VALUES ('"+asunto+"','"+mensaje+"',DATE('now'),TIME('now'),'"+origen+"','"+destino+"','0')"
@@ -59,7 +59,7 @@ def registrar_mail(origen, destino, asunto, mensaje):
     return "1"
 
 def ver_enviados(correo):
-    db=sqlite3.connect("mensajeria.db3")
+    db=sqlite3.connect("mensajeria.s3db")
     db.row_factory=sqlite3.Row
     cursor=db.cursor()
     consulta="SELECT m.asunto,m.mensaje,m.fecha, m.hora, u.nombreUsuario FROM usuarios u, mensajeria m WHERE u.correo=m.id_usu_recibe AND m.id_usu_envia='"+correo+"' ORDER BY fecha DESC,hora DESC"
@@ -68,7 +68,7 @@ def ver_enviados(correo):
     return resultado
 
 def ver_recibidos(correo):
-    db=sqlite3.connect("mensajeria.db3")
+    db=sqlite3.connect("mensajeria.s3db")
     db.row_factory=sqlite3.Row
     cursor=db.cursor()
     consulta="SELECT m.asunto,m.mensaje,m.fecha, m.hora, u.nombreUsuario FROM usuarios u, mensajeria m WHERE u.correo=m.id_usu_envia AND m.id_usu_recibe='"+correo+"' ORDER BY fecha DESC,hora DESC"
@@ -77,7 +77,7 @@ def ver_recibidos(correo):
     return resultado
 
 def actualizapass(password, correo):
-    db=sqlite3.connect("mensajeria.db3")
+    db=sqlite3.connect("mensajeria.s3db")
     db.row_factory=sqlite3.Row
     cursor=db.cursor()
     consulta="UPDATE usuarios SET password='"+password+"' WHERE correo='"+correo+"'"
